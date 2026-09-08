@@ -1,5 +1,3 @@
 # Nothing here
 
-'''bash
-https://mowfteedev.github.io/
-'''
+https://mowfteedev.github.io
