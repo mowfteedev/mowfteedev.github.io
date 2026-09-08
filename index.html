@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trang giới thiệu — Terminal Cyberpunk</title>
+  <meta name="color-scheme" content="dark">
+  <style>
+    /* MÀU SẮC */
+    :root{
+      --bg: #0b0f19;         /* nền tối */
+      --text: #d1d5db;       /* chữ trắng xám nhạt */
+      --accent: #06b6d4;     /* duy nhất màu nhấn (cyan) */
+      --muted-border: rgba(209,213,219,0.06); /* viền mảnh, rất nhẹ */
+    }
+
+    /* Toàn trang */
+    html,body{
+      height:100%;
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Container căn giữa, 1 màn hình không cuộn */
+    .center {
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:2rem;
+      box-sizing:border-box;
+    }
+
+    /* Nội dung chính (không bo góc, không shadow) */
+    .content {
+      text-align:center;
+      width:100%;
+      max-width:880px;
+    }
+
+    /* Tên lớn, dùng màu nhấn duy nhất */
+    h1 {
+      margin:0;
+      font-size:clamp(2rem, 6vw, 4rem);
+      line-height:1;
+      color:var(--accent); /* tên: duy nhất màu nhấn */
+      font-weight:700;
+      letter-spacing:0.02em;
+    }
+
+    /* Dòng giới thiệu (typewriter) */
+    .role {
+      margin-top:1rem;
+      margin-bottom:3rem;
+      font-size:clamp(1rem, 2.2vw, 1.25rem);
+      color:var(--text);
+      white-space:pre; /* giữ khoảng trắng nếu cần */
+      display:inline-block;
+      min-height:1.4em; /* tránh layout shift khi chưa gõ xong */
+    }
+
+    /* Con trỏ "_" được màu accent bằng text màu của element con */
+    .cursor {
+      color:var(--accent);
+      font-weight:700;
+      margin-left:0.1em;
+    }
+
+    /* Hàng icon liên hệ bên dưới */
+    .contacts {
+      margin-top:2.5rem;
+      display:flex;
+      gap:0.75rem;
+      justify-content:center;
+    }
+
+    .contact-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:44px;
+      height:44px;
+      border:1px solid var(--muted-border); /* viền mảnh */
+      color:var(--text);
+      background:transparent;
+      text-decoration:none;
+      border-radius:4px; /* vuông nhẹ, không bo tròn kiểu SaaS */
+      transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease; /* hover mượt */
+      box-sizing:border-box;
+    }
+
+    /* hover: đổi màu viền/nền nhẹ sang accent (không phóng to) */
+    .contact-link:hover,
+    .contact-link:focus {
+      border-color:var(--accent);
+      background-color: rgba(6,182,212,0.06);
+      color:var(--accent);
+    }
+
+    /* Focus rõ ràng cho keyboard (accessible) */
+    .contact-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset:4px;
+    }
+
+    /* Icon SVG màu kế thừa từ color */
+    .contact-link svg {
+      width:20px;
+      height:20px;
+      display:block;
+      fill:currentColor;
+    }
+
+    /* Văn bản ẩn cho screen-reader */
+    .sr-only{
+      position:absolute !important;
+      width:1px;height:1px;
+      padding:0;margin:-1px;overflow:hidden;
+      clip:rect(0 0 0 0);white-space:nowrap;border:0;
+    }
+
+    /* Responsive: đảm bảo không cần cuộn trên điện thoại */
+    @media (max-height:480px){
+      .content { transform: translateY(-6%); } /* nhẹ dịch lên nếu màn hình quá thấp */
+    }
+
+    /* Chú ý: không dùng animation/CSS @keyframes để tuân theo chỉ 1 hiệu ứng (typewriter JS). */
+  </style>
+</head>
+<body>
+  <main class="center" role="main">
+    <div class="content" aria-live="polite">
+      <!-- Tên: thay [điền tên bạn] -->
+      <h1 id="name">[điền tên bạn]</h1>
+
+      <!-- Dòng giới thiệu: text gốc nằm trong data-text; con trỏ "_" do JS điều khiển -->
+      <div>
+        <div id="role" class="role" aria-label="Giới thiệu ngắn" data-text="[điền, ví dụ &quot;Sinh viên Mạng máy tính &amp; Truyền thông dữ liệu&quot;]"></div>
+        <span id="cursor" class="cursor" aria-hidden="true">_</span>
+      </div>
+
+      <!-- Icon liên hệ: thay href tương ứng -->
+      <nav class="contacts" aria-label="Liên hệ">
+        <a class="contact-link" href="[điền link GitHub]" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <!-- GitHub Mark (SVG) -->
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 0.297C5.37 0.297 0 5.667 0 12.297c0 5.303 3.438 9.8 8.205 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.809 1.305 3.495.998.108-.775.418-1.305.76-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.124-.303-.535-1.527.117-3.176 0 0 1.007-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.02.005 2.045.137 3.003.404 2.29-1.552 3.295-1.23 3.295-1.23.654 1.649.244 2.873.12 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.805 5.625-5.475 5.92.43.37.815 1.096.815 2.21 0 1.595-.015 2.877-.015 3.267 0 .32.216.694.825.576C20.565 22.092 24 17.596 24 12.297 24 5.667 18.63.297 12 .297z"/>
+          </svg>
+        </a>
+
+        <a class="contact-link" href="mailto:[điền]" aria-label="Email">
+          <!-- Mail icon -->
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 1.99 2H20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/>
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <script>
+    /* Typewriter JS: gõ 1 lần khi load, điều khiển cả con trỏ bằng JS để chỉ có 1 hiệu ứng */
+    (function(){
+      const roleEl = document.getElementById('role');
+      const cursorEl = document.getElementById('cursor');
+      const fullText = roleEl.getAttribute('data-text') || '';
+      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const typingDelay = 50; // ms giữa các ký tự
+      const blinkInterval = 600; // ms nhấp nháy con trỏ
+      let i = 0;
+      let blinkTimer = null;
+
+      function setCursorVisible(v){
+        cursorEl.style.opacity = v ? '1' : '0';
+      }
+
+      function startBlinking(){
+        // Nhấp nháy con trỏ (JS) — phần của hiệu ứng typewriter duy nhất
+        if (blinkTimer) return;
+        blinkTimer = setInterval(() => {
+          cursorEl.style.opacity = cursorEl.style.opacity === '0' ? '1' : '0';
+        }, blinkInterval);
+      }
+
+      function stopBlinking(){
+        if (blinkTimer){ clearInterval(blinkTimer); blinkTimer = null; }
+        cursorEl.style.opacity = '1';
+      }
+
+      function typeNextChar(){
+        if (i <= fullText.length - 1){
+          roleEl.textContent += fullText[i];
+          i++;
+          // random nhỏ cho cảm giác tự nhiên
+          const jitter = Math.random()*30 - 15;
+          setTimeout(typeNextChar, typingDelay + jitter);
+        } else {
+          // hoàn tất: tiếp tục cho con trỏ nhấp nháy
+          startBlinking();
+        }
+      }
+
+      // Khi user chọn reduced motion, bỏ animation, hiện toàn bộ text tĩnh
+      if (prefersReduced){
+        roleEl.textContent = fullText;
+        setCursorVisible(false);
+      } else {
+        // Bắt đầu: hiển thị con trỏ, gõ 1 lần
+        roleEl.textContent = '';
+        setCursorVisible(true);
+        // bắt đầu nhấp nháy trước khi gõ để giống terminal
+        startBlinking();
+        // delay nhỏ để nhấp nháy 1 lần rồi gõ
+        setTimeout(() => {
+          // tạm tắt nháy trong lúc gõ để không thấy nhấp nháy song hành
+          if (blinkTimer) { clearInterval(blinkTimer); blinkTimer = null; cursorEl.style.opacity = '1'; }
+          typeNextChar();
+        }, 400);
+      }
+
+      // Cho phép tab navigation rõ ràng: khi element nhận focus, đảm bảo cursor hiển thị
+      document.addEventListener('focusin', () => { cursorEl.style.opacity = '1'; });
+    })();
+  </script>
+</body>
+</html>
